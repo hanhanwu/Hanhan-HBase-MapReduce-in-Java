@@ -29,3 +29,10 @@ LoadLogsMR.java
 Writing a simple standalone program that populates HBase is often useful, but if you have genuinely big data, then it might not be practical. This file is using Map Reduce to send larger amount of log data into HBase.
 
 
+CorrelateLogs.java
+
+My professor has a theory, he thinks, that in our web server logs, the number of bytes transferred to a host might be correlated with the number of requests the host makes. He thinks this is a good theory. In order to check this theory, I would like to calculate the correlation coefficient of each host's number of requests and total bytes transferred. That is, each host making requests will contribute a data point (x,y) where x is the number of requests made, and y is the number of bytes transferred. Then the correlation coefficient can be calculated as, https://en.wikipedia.org/wiki/Pearson_product-moment_correlation_coefficient#For_a_sample
+
+The mapper gets the data from the logs from HBase, the reducer sums the count and bytes for each host. In order to squeeze an extra step into MapReduce, we can use the ChainReducer, which allows us to hook an extra mapper up to work on the reducer's output. The AggregateMapper aggregates all of the data points after the reducer runs.
+
+
